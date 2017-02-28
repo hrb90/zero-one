@@ -1,5 +1,7 @@
 const { isSatisfiable, computeObjective, computeBounds } = require('../util');
 
+// If there's no assignment of variables that will lead to an objective function
+// bigger or smaller than our current best bound, we can prune this branch
 function canPrune(objective, model, lowerBound, upperBound) {
   let bounds = computeBounds(objective, model);
   return ((objective.constraint.type === "min" && bounds[0] >= upperBound) ||
@@ -29,6 +31,7 @@ function bnb(vars, constraints, objective, model, lowerBound = -Infinity, upperB
 
   let unassigned = vars.find(v => (![true, false].includes(model[v.id])));
   if (unassigned) {
+    // Search for a solution setting our unassigned variable to true
     let trueModel = Object.assign({}, model, { [unassigned.id]: true });
     let trueSolution = bnb(vars, constraints, objective, trueModel, lowerBound, upperBound);
     if (trueSolution) {
@@ -41,6 +44,7 @@ function bnb(vars, constraints, objective, model, lowerBound = -Infinity, upperB
         upperBound = trueSolution.upperBound;
       }
     }
+    // Now search for a solution setting our unassigned variable to false
     let falseModel = Object.assign({}, model, { [unassigned.id]: false });
     let falseSolution = bnb(vars, constraints, objective, falseModel, lowerBound, upperBound);
     return falseSolution ? falseSolution : trueSolution;
