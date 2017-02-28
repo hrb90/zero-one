@@ -1,4 +1,4 @@
-const computeObjective = require('./util');
+const { computeObjective } = require('./util');
 const SOLVERS = require('./solvers.js');
 
 class Variable {
