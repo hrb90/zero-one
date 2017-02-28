@@ -35,7 +35,8 @@ You may add constraints to your program with the `addConstraint` method.
 ```javascript
 {
   variables: { [a.id]: 50, [b.id]: -15, [c.id]: 50 },
-  constraint: { type: "max", value: 95 }
+  type: "max",
+  value: 95
 }
 ```
 
@@ -64,18 +65,15 @@ builder.toConstraint();
       hlqwjfgfltgtsrlik: -15,
       scpfmzvsvjvzoxctihuxr: 50
     },
-  constraint:
-    {
-      type: "max",
-      value: 95
-    }
+  type: "max",
+  value: 95
 }
 */
 ```
 
 ### Objective
 
-ZeroOne will work just fine without an objective function; `solve()` will simply return a feasible solution if one exists, and `false` otherwise. However, you may set an objective function by passing a constraint object to a program's `setObjective` method; this method will ignore any value in the `constraint` property of the constraint object, and only use the `constraint` key (`max` or `min`) to determine whether to maximize or minimize the objective function, respectively.
+ZeroOne will work just fine without an objective function; `solve()` will simply return a feasible solution if one exists, and `false` otherwise. However, you may set an objective function by passing a constraint object to a program's `setObjective` method; this method will ignore the constraint object's `value` and will use the `type` property (`max` or `min`) to determine whether to maximize or minimize the objective function, respectively.
 
 ### Solvers
 
