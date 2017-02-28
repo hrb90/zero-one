@@ -9,10 +9,10 @@ function canPrune(objective, model, lowerBound, upperBound) {
 function computeNewBounds(objective, model, lowerBound, upperBound) {
   if (objective.constraint.type === "min") {
     return { lowerBound,
-      upperBound: min(computeObjective(objective, model), upperBound)};
+      upperBound: Math.min(computeObjective(objective.variables, model), upperBound)};
   } else if (objective.constraint.type === "max") {
     return { upperBound,
-      lowerBound: max(computeObjective(objective, model), lowerBound)};
+      lowerBound: Math.max(computeObjective(objective.variables, model), lowerBound)};
   } else {
     return { lowerBound, upperBound };
   }
