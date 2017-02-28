@@ -4,7 +4,7 @@ const bnb = require('./bnb');
 const SOLVERS = {
   backtrack,
   bnb,
-  default: backtrack
+  default: bnb
 };
 
 module.exports = SOLVERS;

@@ -8,10 +8,6 @@ class ConstraintBuilder {
     this.variables = Object.assign(this.variables, {[variable.id]: coef});
   }
 
-  computeObjective(model) {
-
-  }
-
   getCurrentValue() {
     if (this.constraint) {
       let keys = Object.keys(this.constraint);

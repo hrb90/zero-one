@@ -8,8 +8,8 @@ function computeObjective(variables, model) {
   return total;
 }
 
-// Very simple, bounds-based checker.
-function isSatisfiable(constraint, model) {
+// Given a constraint and a partial solution, returns the lowest and highest possible value of the constraint.
+function computeBounds(constraint, model) {
   let coefs = constraint.variables;
   let currentTotal = 0;
   let positiveUnassigned = 0;
@@ -30,16 +30,22 @@ function isSatisfiable(constraint, model) {
         break;
     }
   });
+  return [currentTotal + negativeUnassigned, currentTotal + positiveUnassigned];
+}
+
+// Very simple, bounds-based checker.
+function isSatisfiable(constraint, model) {
+  let bounds = computeBounds(constraint, model);
   let value = constraint.constraint.value;
   switch(constraint.constraint.type) {
     case "eq":
-      return (currentTotal + negativeUnassigned <= value) &&
-        (currentTotal + positiveUnassigned >= value);
+      return (bounds[0] <= value) &&
+        (bounds[1] >= value);
     case "max":
-      return (currentTotal + negativeUnassigned <= value);
+      return (bounds[0] <= value);
     case "min":
-      return (currentTotal + positiveUnassigned >= value);
+      return (bounds[1] >= value);
   }
 }
 
-module.exports = { computeObjective, isSatisfiable };
+module.exports = { computeObjective, isSatisfiable, computeBounds };
