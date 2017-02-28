@@ -116,10 +116,11 @@ Lots of things!
 
 One extremely straightforward example comes from the classic computer game [Minesweeper][minesweeper]. A revealed square gives you information about how many of its neighbors contain mines. By creating one variable to stand for each neighboring tile, and saying that a variable's value is 1 if its corresponding tile contains a mine and 0 otherwise, we can express this as an equation. The collection of all such equations in a partially revealed Minesweeper board is a 0-1 ILP. In fact, ZeroOne powers a lightweight, "smart" Minesweeper variant, [Minsweeper][minsweeper].
 
-0-1 integer linear programming is an [NP-complete problem][npcomplete], which means that instances of many other type of problems can be encoded as 0-1 ILPs. Indeed, several of our [tests][test/test_instances.js] are such encoded problems.
+0-1 integer linear programming is an [NP-complete problem][npcomplete], which means that instances of many other type of problems can be encoded as 0-1 ILPs. Indeed, several of our [tests][tests] are such encoded problems.
 
 [history]: http://james-iry.blogspot.com/2009/05/brief-incomplete-and-mostly-wrong.html
 [lpwiki]: https://en.wikipedia.org/wiki/Linear_programming
 [npcomplete]: https://en.wikipedia.org/wiki/NP-completeness
 [minesweeper]: https://en.wikipedia.org/wiki/Minesweeper_(video_game)
 [minsweeper]: thishasntbeenbuiltyet
+[tests]: test/test_instances.js
