@@ -2,8 +2,6 @@
 
 ZeroOne is a fast, powerful and easy-to-use JavaScript library for solving 0-1 integer linear programs.
 
-## OK, what's a 0-1 integer linear programs?
-
 ## API
 
 ### Program object
@@ -41,7 +39,7 @@ You may add constraints to your program with the `addConstraint` method.
 }
 ```
 
-A ConstraintBuilder object provides a friendlier API for constructing constraints:
+The ConstraintBuilder class provides a friendlier API for constructing constraints:
 
 ```javascript
 program = new ZeroOneProgram();
@@ -82,3 +80,46 @@ ZeroOne will work just fine without an objective function; `solve()` will simply
 ### Solvers
 
 You may select your choice of algorithm to solve your 0-1 ILP using the `setSolver` instance method. Currently two algorithms are supported: `backtrack`, a brute-force backtracking algorithm, and `bnb` (alias `default`), a branch-and-bound algorithm.
+
+## Cool, but what's a 0-1 integer linear programs?
+
+A 0-1 integer linear program is just an integer linear program where the variables are restricted to binary values, [what's the problem][history]?
+
+### Cute. What's an integer linear program?
+
+A [linear program][lpwiki] is a problem where we seek to maximize or minimize what's called an "objective function", which is a linear combination of some variables, subject to some constraints on those variables, which are expressed as linear inequalities (or exact equalities). An integer linear program is exactly the same, except with the additional requirement that the variables must take integer values. A 0-1 integer linear program restricts the values of the variables to just 0 and 1.
+
+Equivalently, we can throw away the objective function and simply ask if there is a "feasible" solution, i.e., an assignment of values to the variables so that all our constraints are satisfied.
+
+#### Can I see a concrete example?
+
+Sure! Here's a small 0-1 ILP from our test file:
+
+```
+Maximize:
+2a + 2b - 5c + 3d + e - f + 5g + h + i
+
+Subject to:
+2a + 2b - 3c <= 2
+2d + 2e - 3f <= 2
+2g + 2h - 3i <= 2
+a + b + d + e + g + h <= 2
+```
+
+Since all variables must be either `0` or `1`, the constraint `2a + 2b - 3c <= 2` specifies that either `a` or `b` can be 1, but both cannot be unless `c` is also `1`. The next two constraints are similar. The final constraint specifies that at most two of `a, b, d, e, g, h` can be `1`.
+
+Some inspection should convince you that the maximum value of the objective function is `9`, which is achieved when `d = g = i = 1` and all other variables are `0`.
+
+### What is this good for?
+
+Lots of things!
+
+One extremely straightforward example comes from the classic computer game [Minesweeper][minesweeper]. A revealed square gives you information about how many of its neighbors contain mines. By creating one variable to stand for each neighboring tile, and saying that a variable's value is 1 if its corresponding tile contains a mine and 0 otherwise, we can express this as an equation. The collection of all such equations in a partially revealed Minesweeper board is a 0-1 ILP. In fact, ZeroOne powers a lightweight, "smart" Minesweeper variant, [Minsweeper][minsweeper].
+
+0-1 integer linear programming is an [NP-complete problem][npcomplete], which means that instances of many other type of problems can be encoded as 0-1 ILPs. Indeed, several of our tests are such encoded problems.
+
+[history]: http://james-iry.blogspot.com/2009/05/brief-incomplete-and-mostly-wrong.html
+[lpwiki]: https://en.wikipedia.org/wiki/Linear_programming
+[npcomplete]: https://en.wikipedia.org/wiki/NP-completeness
+[minesweeper]: https://en.wikipedia.org/wiki/Minesweeper_(video_game)
+[minsweeper]: thishasntbeenbuiltyet
