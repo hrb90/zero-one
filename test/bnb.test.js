@@ -1,5 +1,5 @@
 const TestInstances = require('./test_instances');
-const bnb = require('../src/bnb');
+const bnb = require('../src/solvers/bnb');
 
 TestInstances.SMALL_EXACT(bnb);
 

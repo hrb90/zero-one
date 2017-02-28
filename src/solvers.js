@@ -1,5 +1,5 @@
-const backtrack = require('./backtrack');
-const bnb = require('./bnb');
+const backtrack = require('./solvers/backtrack');
+const bnb = require('./solvers/bnb');
 
 const SOLVERS = {
   backtrack,

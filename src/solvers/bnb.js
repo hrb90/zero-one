@@ -1,4 +1,4 @@
-const { isSatisfiable, computeObjective, computeBounds } = require('./util');
+const { isSatisfiable, computeObjective, computeBounds } = require('../util');
 
 function canPrune(objective, model, lowerBound, upperBound) {
   let bounds = computeBounds(objective, model);

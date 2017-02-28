@@ -1,4 +1,4 @@
-const { isSatisfiable, computeObjective } = require('./util');
+const { isSatisfiable, computeObjective } = require('../util');
 
 function backtrack(vars, constraints, objective, model) {
   // Return false if there's an unsatisfiable constraint
