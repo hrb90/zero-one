@@ -1,3 +1,6 @@
+const { computeObjective } = require('../src/util');
+
+
 const SMALL_EXACT = solver => test('solves a small exact decision problem', () => {
   /*
   a + b = 1
@@ -18,7 +21,7 @@ const SMALL_EXACT = solver => test('solves a small exact decision problem', () =
   expect(solution.d).toBeTruthy();
 });
 
-const SMALL_SAT = solver => test('correctly finds no solution to a small SAT instance', () => {
+const THREE_COLOR_K4 = solver => test('correctly finds no solution to a small SAT instance', () => {
   // Tries to find a 3-coloring of the complete graph on 4 vertices.
   // The first letter of the variable name represents the vertex, and the second represents the color.
 
@@ -58,10 +61,34 @@ const SMALL_SAT = solver => test('correctly finds no solution to a small SAT ins
 });
 
 const SMALL_OPT = solver => test('solves a small optimization problem', () => {
+  // Maximize 2a + 2b - 5c + 3d + e - f + 5g + h + i
+  // Subject to
+  // 2a + 2b - 3c <= 2
+  // 2d + 2e - 3f <= 2
+  // 2g + 2h - 3i <= 2
+  // a + b + d + e + g + h <= 2
+  let vars = [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }, { id: 'e' },
+              { id: 'f' }, { id: 'g' }, { id: 'h' }, { id: 'i' }];
 
+  let constraints = [
+    { variables: { a: 2, b: 2, c: -3}, constraint: { type: "max", value: 2 } },
+    { variables: { d: 2, e: 2, f: -3}, constraint: { type: "max", value: 2 } },
+    { variables: { g: 2, h: 2, i: -3}, constraint: { type: "max", value: 2 } },
+    { variables: { a: 1, b: 1, d: 1, e: 1, g: 1, h: 1}, constraint: { type: "max", value: 2}}
+  ];
+
+  let objective = {
+    variables: { a: 2, b: 2, c: -5, d: 3, e: 1, f: -1, g: 5, h: 1, i: 1},
+    constraint: { type: "max" }
+  };
+
+  let solution = solver(vars, constraints, objective, {});
+
+  expect(computeObjective(objective.variables, solution)).toBe(9);
 });
 
 module.exports = {
   SMALL_EXACT,
-  SMALL_SAT
+  THREE_COLOR_K4,
+  SMALL_OPT
 };
