@@ -36,8 +36,8 @@ function computeBounds(constraint, model) {
 // Very simple, bounds-based checker.
 function isSatisfiable(constraint, model) {
   let bounds = computeBounds(constraint, model);
-  let value = constraint.constraint.value;
-  switch(constraint.constraint.type) {
+  let value = constraint.value;
+  switch(constraint.type) {
     case "eq":
       return (bounds[0] <= value) &&
         (bounds[1] >= value);

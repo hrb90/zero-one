@@ -19,8 +19,8 @@ function backtrack(vars, constraints, objective, model) {
       if (objective) {
         let trueObjective = computeObjective(objective.variables, trueSolution);
         let falseObjective = computeObjective(objective.variables, falseSolution);
-        if ((objective.constraint.type === "max" && trueObjective > falseObjective) ||
-        (objective.constraint.type === "min" && trueObjective < falseObjective)) {
+        if ((objective.type === "max" && trueObjective > falseObjective) ||
+            (objective.type === "min" && trueObjective < falseObjective)) {
           return trueSolution;
         } else {
           return falseSolution;

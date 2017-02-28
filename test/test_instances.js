@@ -9,9 +9,9 @@ const SMALL_EXACT = solver => test('solves a small exact decision problem', () =
   */
   let vars = [ { id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' } ];
   let constraints = [
-    { variables: { a: 1, b: 1 }, constraint: { type: 'eq', value: 1 } },
-    { variables: { a: 1, c: 1, d: 1 }, constraint: { type: 'eq', value: 2 } },
-    { variables: { b: 1, d: 1 }, constraint: { type: 'eq', value: 1 } }
+    { variables: { a: 1, b: 1 }, type: 'eq', value: 1 },
+    { variables: { a: 1, c: 1, d: 1 }, type: 'eq', value: 2 },
+    { variables: { b: 1, d: 1 }, type: 'eq', value: 1 }
   ];
 
   let solution = solver(vars, constraints, null, {});
@@ -31,28 +31,28 @@ const THREE_COLOR_K4 = solver => test('correctly finds no solution to a small SA
               { id: 'dr' }, { id: 'dg' }, { id: 'db' }];
 
   let constraints = [
-    { variables: { ar: 1, ag: 1, ab: 1 }, constraint: { type: 'min', value: 1 } },
-    { variables: { br: 1, bg: 1, bb: 1 }, constraint: { type: 'min', value: 1 } },
-    { variables: { cr: 1, cg: 1, cb: 1 }, constraint: { type: 'min', value: 1 } },
-    { variables: { dr: 1, dg: 1, db: 1 }, constraint: { type: 'min', value: 1 } },
-    { variables: { ar: 1, br: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { ar: 1, cr: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { ar: 1, dr: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { br: 1, cr: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { br: 1, dr: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { cr: 1, dr: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { ag: 1, bg: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { ag: 1, cg: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { ag: 1, dg: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { bg: 1, cg: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { bg: 1, dg: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { cg: 1, dg: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { ab: 1, bb: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { ab: 1, cb: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { ab: 1, db: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { bb: 1, cb: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { bb: 1, db: 1 }, constraint: { type: 'max', value: 1 } },
-    { variables: { cb: 1, db: 1 }, constraint: { type: 'max', value: 1 } }
+    { variables: { ar: 1, ag: 1, ab: 1 }, type: 'min', value: 1 },
+    { variables: { br: 1, bg: 1, bb: 1 }, type: 'min', value: 1 },
+    { variables: { cr: 1, cg: 1, cb: 1 }, type: 'min', value: 1 },
+    { variables: { dr: 1, dg: 1, db: 1 }, type: 'min', value: 1 },
+    { variables: { ar: 1, br: 1 }, type: 'max', value: 1 },
+    { variables: { ar: 1, cr: 1 }, type: 'max', value: 1 },
+    { variables: { ar: 1, dr: 1 }, type: 'max', value: 1 },
+    { variables: { br: 1, cr: 1 }, type: 'max', value: 1 },
+    { variables: { br: 1, dr: 1 }, type: 'max', value: 1 },
+    { variables: { cr: 1, dr: 1 }, type: 'max', value: 1 },
+    { variables: { ag: 1, bg: 1 }, type: 'max', value: 1 },
+    { variables: { ag: 1, cg: 1 }, type: 'max', value: 1 },
+    { variables: { ag: 1, dg: 1 }, type: 'max', value: 1 },
+    { variables: { bg: 1, cg: 1 }, type: 'max', value: 1 },
+    { variables: { bg: 1, dg: 1 }, type: 'max', value: 1 },
+    { variables: { cg: 1, dg: 1 }, type: 'max', value: 1 },
+    { variables: { ab: 1, bb: 1 }, type: 'max', value: 1 },
+    { variables: { ab: 1, cb: 1 }, type: 'max', value: 1 },
+    { variables: { ab: 1, db: 1 }, type: 'max', value: 1 },
+    { variables: { bb: 1, cb: 1 }, type: 'max', value: 1 },
+    { variables: { bb: 1, db: 1 }, type: 'max', value: 1 },
+    { variables: { cb: 1, db: 1 }, type: 'max', value: 1 }
   ];
 
   let solution = solver(vars, constraints, null, {});
@@ -71,15 +71,15 @@ const SMALL_OPT = solver => test('solves a small optimization problem', () => {
               { id: 'f' }, { id: 'g' }, { id: 'h' }, { id: 'i' }];
 
   let constraints = [
-    { variables: { a: 2, b: 2, c: -3}, constraint: { type: "max", value: 2 } },
-    { variables: { d: 2, e: 2, f: -3}, constraint: { type: "max", value: 2 } },
-    { variables: { g: 2, h: 2, i: -3}, constraint: { type: "max", value: 2 } },
-    { variables: { a: 1, b: 1, d: 1, e: 1, g: 1, h: 1}, constraint: { type: "max", value: 2}}
+    { variables: { a: 2, b: 2, c: -3}, type: "max", value: 2 },
+    { variables: { d: 2, e: 2, f: -3}, type: "max", value: 2 },
+    { variables: { g: 2, h: 2, i: -3}, type: "max", value: 2 },
+    { variables: { a: 1, b: 1, d: 1, e: 1, g: 1, h: 1}, type: "max", value: 2 }
   ];
 
   let objective = {
     variables: { a: 2, b: 2, c: -5, d: 3, e: 1, f: -1, g: 5, h: 1, i: 1},
-    constraint: { type: "max" }
+    type: "max"
   };
 
   let solution = solver(vars, constraints, objective, {});

@@ -4,15 +4,15 @@ const { isSatisfiable, computeObjective, computeBounds } = require('../util');
 // bigger or smaller than our current best bound, we can prune this branch
 function canPrune(objective, model, lowerBound, upperBound) {
   let bounds = computeBounds(objective, model);
-  return ((objective.constraint.type === "min" && bounds[0] >= upperBound) ||
-      (objective.constraint.type === "max" && bounds[1] <= lowerBound));
+  return ((objective.type === "min" && bounds[0] >= upperBound) ||
+      (objective.type === "max" && bounds[1] <= lowerBound));
 }
 
 function computeNewBounds(objective, model, lowerBound, upperBound) {
-  if (objective.constraint.type === "min") {
+  if (objective.type === "min") {
     return { lowerBound,
       upperBound: Math.min(computeObjective(objective.variables, model), upperBound)};
-  } else if (objective.constraint.type === "max") {
+  } else if (objective.type === "max") {
     return { upperBound,
       lowerBound: Math.max(computeObjective(objective.variables, model), lowerBound)};
   } else {

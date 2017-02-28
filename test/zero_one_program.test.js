@@ -14,7 +14,8 @@ test('adds constraints', () => {
   let b = program.addVariable();
   let constraint = {
     variables: { [a.id]: 5, [b.id]: 3 },
-    constraint: { type: "max", value: 6 }
+    type: "max",
+    value: 6
   };
   program.addConstraint(constraint);
 
@@ -27,7 +28,7 @@ test('adds an objective function', () => {
   let b = program.addVariable();
   let objective = {
     variables: { [a.id]: 5, [b.id]: 3 },
-    constraint: { type: "max" }
+    type: "max"
   };
   program.addObjective(objective);
 
@@ -40,7 +41,7 @@ test('computes an objective function', () => {
   let b = program.addVariable();
   let objective = {
     variables: { [a.id]: 5, [b.id]: 3 },
-    constraint: { type: "max" }
+    type: "max"
   };
   program.addObjective(objective);
   let model = { [a.id]: true, [b.id]: false };

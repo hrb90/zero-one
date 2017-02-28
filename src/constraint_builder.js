@@ -1,7 +1,8 @@
 class ConstraintBuilder {
-  constructor(variables, constraint) {
+  constructor(variables, type, value) {
     this.variables = variables || {};
-    this.constraint = constraint || { type: null, value: null };
+    this.type = type;
+    this.value = value;
   }
 
   addTerm(variable, coef) {
@@ -9,12 +10,7 @@ class ConstraintBuilder {
   }
 
   getCurrentValue() {
-    if (this.constraint) {
-      let keys = Object.keys(this.constraint);
-      return (keys.length > 0 ? this.constraint[keys[0]] : null);
-    } else {
-      return null;
-    }
+    return this.value;
   }
 
   makeEq() {
@@ -30,15 +26,15 @@ class ConstraintBuilder {
   }
 
   setType(type) {
-    this.constraint.type = type;
+    this.type = type;
   }
 
   setValue(value) {
-    this.constraint.value = value;
+    this.value = value;
   }
 
   toConstraint() {
-    return { variables: this.variables, constraint: this.constraint };
+    return { variables: this.variables, type: this.type, value: this.value };
   }
 }
 

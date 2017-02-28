@@ -19,14 +19,14 @@ test('sets the type', () => {
   let builder = new ConstraintBuilder();
   builder.setType("max");
 
-  expect(builder.toConstraint().constraint.type).toBe("max");
+  expect(builder.toConstraint().type).toBe("max");
 });
 
 test('sets the value', () => {
   let builder = new ConstraintBuilder();
   builder.setValue(10);
 
-  expect(builder.toConstraint().constraint.value).toBe(10);
+  expect(builder.toConstraint().value).toBe(10);
 });
 
 test('builds a constraint', () => {
@@ -41,6 +41,7 @@ test('builds a constraint', () => {
 
   expect(constraint).toEqual({
     variables: { a: 3, b: -4, c: 5 },
-    constraint: { type: "max", value: 3 }
+    type: "max",
+    value: 3
   });
 });
