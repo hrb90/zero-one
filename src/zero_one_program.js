@@ -34,6 +34,8 @@ class ZeroOneProgram {
     this.constraints.push(constraint);
   }
 
+  // Add an objective
+  // An objective is just like a constraint, except that objective.constraint.value will be ignored
   addObjective(objective) {
     this.objective = objective;
   }
@@ -49,6 +51,7 @@ class ZeroOneProgram {
     return computeObjective(this.objective.variables, model);
   }
 
+  // set the solver!
   setSolver(name) {
     this.solver = SOLVERS[name];
   }
