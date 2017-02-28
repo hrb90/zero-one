@@ -1,3 +1,29 @@
+// Checks that there aren't too many variables set to true or false for the constraint to ever be satisfied.
+function isSatisfiable(constraint, model) {
+  totals = [true, false].map( value => {
+    return constraint.variables.reduce((accum, currVar) => {
+      return accum + (model[currVar.id] === value ? 1 : 0);
+    }, 0);
+  });
+  return (totals[0] <= constraint.total) &&
+    (totals[1] <= constraint.variables.length - constraint.total);
+}
+
+function backtrack(vars, constraints, model) {
+  //Return false if there's a bad constraint
+  if (constraints.some(c => (isSatisfiable(c, model) === false))) {
+    return false;
+  }
+  let unassigned = vars.find(v => (![true, false].includes(model[v.id])));
+  if (unassigned) {
+    let trueModel = Object.assign({}, model, { [unassigned.id]: true });
+    let falseModel = Object.assign({}, model, { [unassigned.id]: false});
+    return backtrack(vars, constraints, trueModel) || backtrack(vars, constraints, falseModel);
+  } else {
+    // everything is assigned and all our constraints are satisfiable!
+    return model;
+  }
+}
 
 class Variable {
   constructor() {
@@ -14,9 +40,10 @@ class Variable {
 }
 
 class ZeroOneProgram {
-  constructor(vars = {}, constraints = []) {
+  constructor(vars = [], constraints = [], model = {}) {
     this.vars = vars;
     this.constraints = constraints;
+    this.model = model;
   }
 
   // Add a constraint that the variables in varArray must sum to total
@@ -30,57 +57,19 @@ class ZeroOneProgram {
   // Add a new variable to this.vars and return it
   addVariable() {
     let newVar = new Variable();
-    this.vars[newVar.id] = newVar;
+    this.vars.push(newVar);
     return newVar;
   }
 
-  // Checks that there aren't too many variables set to true or false for the constraint to ever be satisfied.
-  isSatisfiable(constraint) {
-    let totalTrue = constraint.variables.reduce((accum, currVar) => {
-      return accum + (currVar.value === true ? 1 : 0);
-    }, 0);
-    let totalFalse = constraint.variables.reduce((accum, currVar) => {
-      return accum + (currVar.value === false ? 1 : 0);
-    }, 0);
-    return (totalTrue <= constraint.total) &&
-      (totalFalse <= constraint.variables.length - constraint.total);
-  }
-
   solve() {
-    // Return false if there's a bad constraint
-    if (!this.testAllConstraints()) {
+    let solution = backtrack(this.vars, this.constraints, this.model);
+    if (solution) {
+      this.vars.forEach(v => v.setValue(solution[v.id]));
+    } else {
       return false;
     }
-    // Find an unassigned variable
-    let varArray = Object.keys(this.vars).map(id => this.vars[id]);
-    let unassigned = varArray.find(v => (![true, false].includes(v.value)));
-    let subProgram;
-    if (unassigned) {
-      // Test if assigning it to true gives a satisfiable program
-      unassigned.setValue(true);
-      subProgram = new ZeroOneProgram(Object.assign({}, this.vars), this.constraints.slice(0));
-      if (subProgram.solve()) {
-        return true;
-      }
-      // Test if assigning it to false gives a satisfiable program
-      unassigned.setValue(false);
-      subProgram = new ZeroOneProgram(Object.assign({}, this.vars), this.constraints.slice(0));
-      if (subProgram.solve()) {
-        return true;
-      }
-    } else {
-      console.log(varArray.map(v => `${v.id}: ${v.value}`));
-      return this.testAllConstraints();
-    }
-  }
-
-  testAllConstraints() {
-    let satisfiable = true;
-    this.constraints.forEach(constraint => {
-      satisfiable = satisfiable && this.isSatisfiable(constraint);
-    });
-    return satisfiable;
   }
 }
+
 
 module.exports = ZeroOneProgram;
