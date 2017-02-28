@@ -5,6 +5,7 @@ test('generates variables', () => {
   let a = program.addVariable();
 
   expect(a.id).toBeDefined();
+  expect(a.value).toBeUndefined();
 });
 
 test('adds constraints', () => {
@@ -52,24 +53,12 @@ test('assigns values to generated variables if solution is feasible', () => {
   let a = program.addVariable();
   let b = program.addVariable();
   let c = program.addVariable();
-  let constraint1 = {
-    variables: { [a.id]: 2, [b.id]: 3, [c.id]: 1},
-    constraint: { type: "max", value: 3 }
-  };
-  let constraint2 = {
-    variables: { [a.id]: 1, [c.id]: 1},
-    constraint: { type: "min", value: 1 }
-  };
-  let objective = {
-    variables: { [a.id]: 2, [b.id]: 7, [c.id]: 1},
-    constraint: { type: "max" }
-  };
-  program.addConstraint(constraint1);
-  program.addConstraint(constraint2);
-  program.setSolver("backtrack");
+
+  // No constraints, so all solutions are feasible...
+
   program.solve();
 
-  expect(a.value).toBeTruthy();
-  expect(b.value).toBeFalsy();
-  expect(c.value).toBeTruthy();
+  expect(a.value).toBeDefined();
+  expect(b.value).toBeDefined();
+  expect(c.value).toBeDefined();
 });

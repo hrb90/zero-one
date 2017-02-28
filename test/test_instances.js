@@ -1,7 +1,10 @@
+/*
+a + b = 1
+a + c + d = 2
+b + d = 1
+*/
 const SMALL_EXACT = solver => test('solves a small exact decision problem', () => {
-  // Make variables
   let vars = [ { id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' } ];
-  // Make constraints
   let constraints = [
     { variables: { a: 1, b: 1 }, constraint: { type: 'eq', value: 1 } },
     { variables: { a: 1, c: 1, d: 1 }, constraint: { type: 'eq', value: 2 } },
