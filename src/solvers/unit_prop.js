@@ -9,7 +9,7 @@ function isUnitConstraint(constraint, model) {
       unassignedVar = id;
     }
   });
-  return unassignedVar === 1 ? unassignedVar : false;
+  return unassignedCount === 1 ? unassignedVar : false;
 }
 
 // Takes a constraint and a partial
