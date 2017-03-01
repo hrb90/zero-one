@@ -1,2 +1,5 @@
 # Ignore node packages
 /node_modules
+
+# Ignore testmaking script
+generate.js
