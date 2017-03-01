@@ -1,5 +1,6 @@
 const { isSatisfiable, computeObjective, computeBounds } = require('../util');
 
+const resolveUnitConstraint = require('./unit_prop');
 // If there's no assignment of variables that will lead to an objective function
 // bigger or smaller than our current best bound, we can prune this branch
 function canPrune(objective, model, lowerBound, upperBound) {
@@ -27,6 +28,15 @@ function bnb(vars, constraints, objective, model, lowerBound = -Infinity, upperB
 
   if (objective && canPrune(objective, model, lowerBound, upperBound)) {
     return false;
+  }
+
+  // unit propagation
+  let units = {};
+  constraints.forEach(constraint => {
+    Object.assign(units, resolveUnitConstraint(constraint, model));
+  });
+  if (Object.keys(units).length > 0) {
+    return bnb(vars, constraints, objective, Object.assign(units, model), lowerBound, upperBound);
   }
 
   let unassigned = vars.find(v => (![true, false].includes(model[v.id])));
