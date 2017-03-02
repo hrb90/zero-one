@@ -1,6 +1,6 @@
 const { isSatisfiable, computeObjective, computeBounds } = require('../util');
 
-const resolveUnitConstraint = require('./unit_prop');
+const { resolveUnitConstraint } = require('./unit_prop');
 // If there's no assignment of variables that will lead to an objective function
 // bigger or smaller than our current best bound, we can prune this branch
 function canPrune(objective, model, lowerBound, upperBound) {
@@ -12,10 +12,10 @@ function canPrune(objective, model, lowerBound, upperBound) {
 function computeNewBounds(objective, model, lowerBound, upperBound) {
   if (objective.type === "min") {
     return { lowerBound,
-      upperBound: Math.min(computeObjective(objective.variables, model), upperBound)};
+      upperBound: Math.min(computeObjective(objective.variables, model), upperBound) };
   } else if (objective.type === "max") {
     return { upperBound,
-      lowerBound: Math.max(computeObjective(objective.variables, model), lowerBound)};
+      lowerBound: Math.max(computeObjective(objective.variables, model), lowerBound) };
   } else {
     return { lowerBound, upperBound };
   }

@@ -1,15 +1,17 @@
 const { computeObjective, isSatisfiable } = require('../util');
 
+
+// Tests whether there is exactly one unassigned variable in constraint
 function isUnitConstraint(constraint, model) {
   let unassignedCount = 0;
-  let unassignedVar;
+  let unassignedVarId;
   Object.keys(constraint.variables).forEach(id => {
     if (![true, false].includes(model[id])) {
       unassignedCount += 1;
-      unassignedVar = id;
+      unassignedVarId = id;
     }
   });
-  return unassignedCount === 1 ? unassignedVar : false;
+  return unassignedCount === 1 ? unassignedVarId : false;
 }
 
 // Takes a constraint and a partial
@@ -32,4 +34,4 @@ function resolveUnitConstraint(constraint, model) {
   return {};
 }
 
-module.exports = resolveUnitConstraint;
+module.exports = { isUnitConstraint, resolveUnitConstraint };
