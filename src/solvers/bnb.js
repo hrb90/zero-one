@@ -9,6 +9,7 @@ function canPrune(objective, model, lowerBound, upperBound) {
       (objective.type === "max" && bounds[1] <= lowerBound));
 }
 
+// Not very DRY, but keeps upperBound and lowerBound semantic.
 function computeNewBounds(objective, model, lowerBound, upperBound) {
   if (objective.type === "min") {
     return { lowerBound,
@@ -57,6 +58,7 @@ function bnb(vars, constraints, objective, model, lowerBound = -Infinity, upperB
     // Now search for a solution setting our unassigned variable to false
     let falseModel = Object.assign({}, model, { [unassigned.id]: false });
     let falseSolution = bnb(vars, constraints, objective, falseModel, lowerBound, upperBound);
+    // Tricky...
     return falseSolution ? falseSolution : trueSolution;
   } else {
     let newBounds = objective ? computeNewBounds(objective, model, lowerBound, upperBound) : {};
