@@ -1,4 +1,5 @@
 const ZeroOneProgram = require('../src/zero_one_program');
+const { ZeroOneError } = require('../src/util');
 
 test('generates variables', () => {
   let program = new ZeroOneProgram();
@@ -6,6 +7,21 @@ test('generates variables', () => {
 
   expect(a.id).toBeDefined();
   expect(a.value).toBeUndefined();
+});
+
+test('generates a variable with a given id', () => {
+  let program = new ZeroOneProgram();
+  let a = program.addVariable('a');
+
+  expect(a.id).toBe('a');
+  expect(a.value).toBeUndefined();
+});
+
+test('raises an error if you duplicate ids', () => {
+  let program = new ZeroOneProgram();
+  program.addVariable('a');
+
+  expect(() => program.addVariable('a')).toThrow(ZeroOneError);
 });
 
 test('adds constraints', () => {

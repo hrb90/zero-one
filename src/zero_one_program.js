@@ -1,4 +1,4 @@
-const { computeObjective } = require('./util');
+const { computeObjective, ZeroOneError } = require('./util');
 const SOLVERS = require('./solvers.js');
 
 function makeVariable(id) {
@@ -6,7 +6,7 @@ function makeVariable(id) {
 }
 
 class ZeroOneProgram {
-  constructor(vars = [], constraints = [], model = {}, objective=null, solver="default") {
+  constructor(vars = {}, constraints = [], model = {}, objective=null, solver="default") {
     this.vars = vars;
     this.constraints = constraints;
     this.model = model;
@@ -32,9 +32,13 @@ class ZeroOneProgram {
 
   // Add a new variable to this.vars and return it
   addVariable(id) {
-    let newVar = makeVariable(id);
-    this.vars.push(newVar);
-    return newVar;
+    if (this.vars[id]) {
+      throw new ZeroOneError('a variable with that ID already exists!');
+    } else {
+      let newVar = makeVariable(id);
+      Object.assign(this.vars, {[newVar.id]: newVar});
+      return newVar;
+    }
   }
 
   computeObjective(model) {
@@ -47,9 +51,10 @@ class ZeroOneProgram {
   }
 
   solve() {
-    let solution = this.solver(this.vars, this.constraints, this.objective, this.model);
+    let vars = Object.keys(this.vars).map(id => this.vars[id]);
+    let solution = this.solver(vars, this.constraints, this.objective, this.model);
     if (solution) {
-      this.vars.forEach(function(v) { v.value = solution[v.id]; });
+      vars.forEach(function(v) { v.value = solution[v.id]; });
     }
     if (solution && this.objective) {
       // Return the extreme value of the objective function

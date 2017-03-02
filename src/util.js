@@ -1,3 +1,5 @@
+class ZeroOneError extends Error { }
+
 function computeObjective(variables, model) {
   let total = 0;
   Object.keys(variables).forEach(key => {
@@ -48,4 +50,4 @@ function isSatisfiable(constraint, model) {
   }
 }
 
-module.exports = { computeObjective, isSatisfiable, computeBounds };
+module.exports = { ZeroOneError, computeObjective, isSatisfiable, computeBounds };
