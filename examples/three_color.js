@@ -1,5 +1,5 @@
-const ZeroOneProgram = require('./src/zero_one_program');
-const ConstraintBuilder = require('./src/constraint_builder');
+const ZeroOneProgram = require('../src/zero_one_program');
+const ConstraintBuilder = require('../src/constraint_builder');
 
 // Takes a graph (a POJO with properties vertices and edges pointing to arrays)
 // Outputs a ZeroOneProgram corresponding to the problem: "Can this graph be 3-colored?"
