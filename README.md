@@ -10,12 +10,15 @@ A single linear program is represented by a `ZeroOneProgram` instance. After usi
 
 ### Variables
 
-After you've initialized a `ZeroOneProgram` instance, calling `addVariable()` on it will return a new Variable object:
+A variable is a plain JavaScript object with an `id` property, and optionally a boolean `value` property.
+
+After you've initialized a `ZeroOneProgram` instance, calling `addVariable([id])` on it will return a new Variable object with the provided id, or if none is provided, a randomly generated id:
 
 ```javascript
 program = new ZeroOneProgram();
 a = program.addVariable();
-// Variable { id: 'xxcwxdicnpapgvixjsaor' }
+// { id: 'xxcwxdicnpapgvixjsaor' }
+b = program.addVariable(id);
 ```
 
 After you call `solve`, if ZeroOne finds a valid solution to the program, these Variable objects will have `value` properties containing the computed values as booleans (`true` for 1 and `false` for 0):
@@ -23,33 +26,35 @@ After you call `solve`, if ZeroOne finds a valid solution to the program, these 
 ```javascript
 program.solve();
 a
-// Variable { id: 'xxcwxdicnpapgvixjsaor', value: true }
+// { id: 'xxcwxdicnpapgvixjsaor', value: true }
 ```
 
 ### Constraints
 
-You may add constraints to your program with the `addConstraint` method.
-
-`addConstraint` expects to be passed a specially-shaped JavaScript object containing information about the constraint. For instance, for variables `a, b, c`, the constraint `50a - 15b + 50c <= 95` is represented as the Javascript object
+Constraints are plain JavaScript objects with a special shape. For instance, for variables `a, b, c`, the constraint `50a - 15b + 50c <= 95` is represented as the Javascript object
 
 ```javascript
 {
-  variables: { [a.id]: 50, [b.id]: -15, [c.id]: 50 },
+  variables: { a: 50, b: -15, c: 50 },
   type: "max",
   value: 95
 }
 ```
 
-The ConstraintBuilder class provides a friendlier API for constructing constraints:
+You may add constraints to your program with the `addConstraint` method.
+
+#### ConstraintBuilder
+
+The `ConstraintBuilder` class provides a friendlier API for constructing constraints:
 
 ```javascript
 program = new ZeroOneProgram();
 a = program.addVariable();
-// Variable { id: 'htuwnamvtuawzbiwoyb' }
+// { id: 'htuwnamvtuawzbiwoyb' }
 b = program.addVariable();
-// Variable { id: 'hlqwjfgfltgtsrlik' }
+// { id: 'hlqwjfgfltgtsrlik' }
 c = program.addVariable();
-// Variable { id: 'scpfmzvsvjvzoxctihuxr' }
+// { id: 'scpfmzvsvjvzoxctihuxr' }
 builder = new ConstraintBuilder();
 builder.addTerm(a, 50);
 builder.addTerm(b, -15);
