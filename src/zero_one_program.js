@@ -1,18 +1,8 @@
 const { computeObjective } = require('./util');
 const SOLVERS = require('./solvers.js');
 
-class Variable {
-  constructor() {
-    this.id = this.getSlug();
-  }
-
-  getSlug() {
-    return Math.random().toString(36).replace(/[^a-z]+/g, '');
-  }
-
-  setValue(value) {
-    this.value = value;
-  }
+function makeVariable(id) {
+  return { id: id || Math.random().toString(36).replace(/[^a-z]+/g, '') };
 }
 
 class ZeroOneProgram {
@@ -41,8 +31,8 @@ class ZeroOneProgram {
   }
 
   // Add a new variable to this.vars and return it
-  addVariable() {
-    let newVar = new Variable();
+  addVariable(id) {
+    let newVar = makeVariable(id);
     this.vars.push(newVar);
     return newVar;
   }
@@ -59,7 +49,7 @@ class ZeroOneProgram {
   solve() {
     let solution = this.solver(this.vars, this.constraints, this.objective, this.model);
     if (solution) {
-      this.vars.forEach(v => v.setValue(solution[v.id]));
+      this.vars.forEach(function(v) { v.value = solution[v.id]; });
     }
     if (solution && this.objective) {
       // Return the extreme value of the objective function
