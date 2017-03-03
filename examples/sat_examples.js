@@ -262,4 +262,6 @@ p cnf 50 80
 -3 -13 46 0
 -13 -41 43 0`;
 
+
+
 module.exports = { aim100, aim50 };

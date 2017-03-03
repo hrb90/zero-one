@@ -11,7 +11,7 @@ function computeObjective(variables, model) {
 }
 
 // Given a constraint and a partial solution, returns the lowest and highest possible value of the constraint.
-function computeBounds(constraint, model) {
+function computeBounds_old(constraint, model) {
   let coefs = constraint.variables;
   let currentTotal = 0;
   let positiveUnassigned = 0;
@@ -32,6 +32,31 @@ function computeBounds(constraint, model) {
         break;
     }
   });
+  return [currentTotal + negativeUnassigned, currentTotal + positiveUnassigned];
+}
+
+// Given a constraint and a partial solution, returns the lowest and highest possible value of the constraint.
+function computeBounds(constraint, model) {
+  let coefs = constraint.variables;
+  let currentTotal = 0;
+  let positiveUnassigned = 0;
+  let negativeUnassigned = 0;
+  let ids = Object.keys(coefs);
+  let id, value, coef;
+  for (var i = 0; i < ids.length; i++) {
+    id = ids[i];
+    value = model[id];
+    coef = coefs[id];
+    if (value === true) {
+      currentTotal += coef;
+    } else if (value !== false) {
+      if (coef < 0) {
+        negativeUnassigned += coef;
+      } else {
+        positiveUnassigned += coef;
+      }
+    }
+  }
   return [currentTotal + negativeUnassigned, currentTotal + positiveUnassigned];
 }
 
